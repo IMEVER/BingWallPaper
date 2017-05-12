@@ -1,0 +1,10 @@
+package: bingwallpaper
+version: 1.0.2
+architecture: all
+Maintainer: IMEVER <Hobart_Tian@imever.me>
+description: It is an app for you to auto change desktop
+ wallpaper with image downloading from www.bing.com
+Section: base
+Priority: optional
+Installed-Size:31.7KB
+depends:python,python-qt4,libqt4-sql-sqlite

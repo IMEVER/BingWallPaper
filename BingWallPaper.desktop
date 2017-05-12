@@ -1,0 +1,15 @@
+[Desktop Entry]
+Categories=Application;System;Settings
+Comment=Auto download bing images and change wallpaper application
+Exec=bingwallpaper
+GenericName=Bing WallPaper application
+Icon=bing-wallpaper
+Name=Bing WallPaper
+StartupNotify=false
+Terminal=false
+Type=Application
+
+# Translations
+Comment[zh_CN]=bing wallpaper
+GenericName[zh_CN]=bing wallpaper
+Name[zh_CN]=bing wallpaper

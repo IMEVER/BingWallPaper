@@ -1,0 +1,49 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2017-01-09 18:28+CST\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: src/Window/setting.py:39
+msgid "Interval(hour):"
+msgstr "间隔时间(小时)"
+
+#: src/Window/setting.py:52
+msgid "Auto startup:"
+msgstr "开机自启动"
+
+#: src/Window/setting.py:76
+msgid "Browser"
+msgstr "浏览"
+
+#: src/Window/setting.py:80
+msgid "setting"
+msgstr "设置"
+
+#: src/Window/setting.py:84
+msgid "about"
+msgstr "关于"
+
+#: src/Window/setting.py:88
+msgid "Quit"
+msgstr "退出"
+
+#: src/Window/setting.py:140
+msgid "About"
+msgstr "关于"
+
+#: src/Window/setting.py:174
+msgid "BingWallPaper is a app that set you desktop wallpaper with awesome image downloading from www.bing.com every hour"
+msgstr "BingWallPaper是一个切换桌面的程序，每天自动从www.bing.com下载图片，每隔一定的时间自动切换桌面"
+

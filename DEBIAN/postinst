@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+# Automatically added by dh_installdocs
+if [ "$1" = "configure" ]; then
+  if [ -d /usr/doc -a ! -e /usr/doc/bingwallpaper -a -d /usr/share/doc/bingwallpaper ]; then
+    ln -sf ../share/doc/bingwallpaper /usr/doc/bingwallpaper
+  fi
+fi
+
+#bingwallpaper
+# End automatically added section
