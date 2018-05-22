@@ -6,6 +6,7 @@ import os
 import time
 from Db import Model
 from Log import Log
+import json
 
 
 class BingImg(threading.Thread):
@@ -61,12 +62,21 @@ class BingImg(threading.Thread):
             self.logger.error('Get img url failed!')
             return None
 
+    def parse_img_url_from_json(self):
+        url = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1'
+        data = urllib2.urlopen(url).read().decode('utf-8')
+        ret = json.loads(data)
+        imgUrl = ret['images'][0]['url']
+
+        return imgUrl if imgUrl.startswith('http') else 'https://cn.bing.com' + imgUrl
+
     def down_img(self):
         while True:
             model = Model()
             item = model.getOneByDay(time.strftime('%Y-%m-%d'))
             if not item:
-                url = self.parse_img_url()
+                url = self.parse_img_url_from_json()
+                # url = self.parse_img_url()
                 if url:
                     self.download(url, model)
 
