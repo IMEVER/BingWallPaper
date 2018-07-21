@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 # coding:utf-8
 
 import os
 import sqlite3
-from Log import Log
+from WallPaper.Log import Log
 
 
 class Model:

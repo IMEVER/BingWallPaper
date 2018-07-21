@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 # coding:utf-8
 
-from Db import Model
+from WallPaper.Db import Model
 
 
 class Config:

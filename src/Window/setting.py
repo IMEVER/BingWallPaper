@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 # coding=utf-8
 import os, gettext
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 
-from PyQt4.QtCore import QUrl
-from PyQt4.QtGui import QDesktopServices
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 from WallPaper.Log import Log
 
 locale_path = '/data/www/python/BingWallPaper/locale/'
@@ -14,7 +14,7 @@ _ = gettext.gettext
 zh_trans  = gettext.install('messages', names=['zh_CN'])
 
 
-class MyWindow(QtGui.QWidget):
+class MyWindow(QtWidgets.QWidget):
     def __init__(self, conf, app):
         super(MyWindow, self).__init__()
 
@@ -36,28 +36,29 @@ class MyWindow(QtGui.QWidget):
         self.aboutWindow = AboutWindow()
 
     def set_label(self):
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
 
-        time_label = QtGui.QLabel(_('Interval(hour):'))
+        time_label = QtWidgets.QLabel(_('Interval(hour):'))
         time_label.setAlignment(QtCore.Qt.AlignCenter)
 
-        select = QtGui.QComboBox()
+        select = QtWidgets.QComboBox(self)
         select.addItem("1", 1)
         select.addItem("2", 2)
         select.addItems(
-            ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21",
-             "22", "23", "24"])
+            ["3", "4", "6", "8", "10", "24"])
         select.setCurrentIndex(self.conf.get('interval') - 1)
 
-        self.connect(select, QtCore.SIGNAL('activated(QString)'), self.on_select)
+        # self.connect(select, QtCore.pyqtSignal('activated(QString)'), self.on_select)
+        select.activated[str].connect(self.on_select)
 
-        autorun_label = QtGui.QLabel(_('Auto startup:'))
+        autorun_label = QtWidgets.QLabel(_('Auto startup:'))
         autorun_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.check = QtGui.QCheckBox('')
+        self.check = QtWidgets.QCheckBox('')
         self.check.setChecked(self.conf.get('autorun') == 1)
-        self.connect(self.check, QtCore.SIGNAL('stateChanged(int)'), self.on_check)
+        # self.connect(self.check, QtCore.pyqtSignal('stateChanged(int)'), self.on_check)
+        self.check.stateChanged.connect(self.on_check)
 
-        grid_layout = QtGui.QGridLayout()
+        grid_layout = QtWidgets.QGridLayout()
 
         grid_layout.addWidget(time_label, 0, 0)
         grid_layout.addWidget(select, 0, 1)
@@ -73,28 +74,33 @@ class MyWindow(QtGui.QWidget):
         # self.setCentralWidget(label)
 
     def _set_systray(self):
-        menu = QtGui.QMenu(self)  # 生成一个系统托盘处的菜单.就一个Quit
+        menu = QtWidgets.QMenu(self)  # 生成一个系统托盘处的菜单.就一个Quit
 
-        browserAction = QtGui.QAction(QtCore.QString("&" + _("Browser")), self)
-        self.connect(browserAction, QtCore.SIGNAL("triggered()"), self.open)
+        browserAction = QtWidgets.QAction("&" + _("Browser"), self)
+        # self.connect(browserAction, QtCore.pyqtSignal("triggered()"), self.open)
+        browserAction.triggered.connect(self.open)
         menu.addAction(browserAction)
 
-        settingAction = QtGui.QAction(QtCore.QString("&"+_("setting")), self)
-        self.connect(settingAction, QtCore.SIGNAL("triggered()"), self.show)
+        settingAction = QtWidgets.QAction("&"+_("setting"), self)
+        # self.connect(settingAction, QtCore.pyqtSignal("triggered()"), self.show)
+        settingAction.triggered.connect(self.show)
         menu.addAction(settingAction)
 
-        aboutAction = QtGui.QAction(QtCore.QString("&"+_("about")), self)
-        self.connect(aboutAction, QtCore.SIGNAL("triggered()"), self.about)
+        aboutAction = QtWidgets.QAction("&"+_("about"), self)
+        # self.connect(aboutAction, QtCore.pyqtSignal("triggered()"), self.about)
+        aboutAction.triggered.connect(self.about)
         menu.addAction(aboutAction)
 
-        quitAction = QtGui.QAction(QtCore.QString("&"+_("Quit")), self)
-        self.connect(quitAction, QtCore.SIGNAL("triggered()"), self.app.quit)
+        quitAction = QtWidgets.QAction("&"+_("Quit"), self)
+        # self.connect(quitAction, QtCore.pyqtSignal("triggered()"), self.app.quit)
+        quitAction.triggered.connect(self.app.quit)
         menu.addAction(quitAction)
 
-        self.icon = QtGui.QSystemTrayIcon(QtGui.QIcon('../resource/index.png'), self)  # 加载系统托盘处的图标
-        self.icon.setToolTip(QtCore.QString(u"A Alert Coming..."))
+        self.icon = QtWidgets.QSystemTrayIcon(QtGui.QIcon('../resource/index.png'), self)  # 加载系统托盘处的图标
+        self.icon.setToolTip(u"A Alert Coming...")
         self.icon.setContextMenu(menu)
-        self.connect(self.icon, QtCore.SIGNAL('activated(QSystemTrayIcon::ActivationReason)'), self.__icon_activated)
+        # self.connect(self.icon, QtCore.pyqtSignal('activated(QSystemTrayIcon::ActivationReason)'), self.__icon_activated)
+        self.icon.activated.connect(self.__icon_activated)
         self.icon.show()
 
     def on_check(self, check):
@@ -115,12 +121,12 @@ class MyWindow(QtGui.QWidget):
         event.ignore()
 
     def __icon_activated(self, reason):
-        if reason == QtGui.QSystemTrayIcon.DoubleClick:
+        if reason == QtWidgets.QSystemTrayIcon.DoubleClick:
             self.show()
 
     def center(self):
         qr = self.frameGeometry()  # 返回代表窗口框架结构的矩形
-        cp = QtGui.QDesktopWidget().availableGeometry().center()  # 返回屏幕（可显示区域）的中心点
+        cp = QtWidgets.QDesktopWidget().availableGeometry().center()  # 返回屏幕（可显示区域）的中心点
         qr.moveCenter(cp)  # 将与窗口同大的矩形移动到屏幕中央
         self.move(qr.topLeft())  # 将主窗口移动到已定位的矩形处，QWidget的移动以左上角为基准点
 
@@ -130,10 +136,10 @@ class MyWindow(QtGui.QWidget):
         self.aboutWindow.show()
 
     def open(self):
-        QDesktopServices.openUrl(QUrl('file:///' + os.path.expanduser('~') + '/.local/share/WallPaper'));
+        QDesktopServices.openUrl(QUrl('file:///' + os.path.expanduser('~') + '/.local/share/bingwallpaper'))
 
 
-class AboutWindow(QtGui.QWidget):
+class AboutWindow(QtWidgets.QWidget):
     def __init__(self):
         super(AboutWindow, self).__init__()
         # QtGui.QWidget.__init__(self, parent)
@@ -144,16 +150,16 @@ class AboutWindow(QtGui.QWidget):
         self.setWindowOpacity(0.9)
         self.center()
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
 
         logo = QtGui.QImage('../resource/index.png')
         pp = QtGui.QPixmap.fromImage(logo)
-        logoLabel = QtGui.QLabel()
+        logoLabel = QtWidgets.QLabel()
         logoLabel.setPixmap(pp.scaled(200, 100, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
         logoLabel.setAlignment(QtCore.Qt.AlignCenter)
         vbox.addWidget(logoLabel)
 
-        nameLabel = QtGui.QLabel('BingWallPaper')
+        nameLabel = QtWidgets.QLabel('BingWallPaper')
         nameLabel.setAlignment(QtCore.Qt.AlignCenter)
         font = QtGui.QFont()
         font.setPixelSize(20)
@@ -165,16 +171,16 @@ class AboutWindow(QtGui.QWidget):
 
         vbox.addWidget(nameLabel)
 
-        authorLabel =  QtGui.QLabel('<a href="http://www.imever.me">IMEVER(Hobart_Tian@imever.me)</a>')
+        authorLabel =  QtWidgets.QLabel('<a href="http://www.imever.me">IMEVER(Hobart_Tian@imever.me)</a>')
         authorLabel.setOpenExternalLinks(True)
         authorLabel.setAlignment(QtCore.Qt.AlignCenter)
         vbox.addWidget(authorLabel)
 
-        versionLabel = QtGui.QLabel('Version: 1.0.1')
+        versionLabel = QtWidgets.QLabel('Version: 2.0.1')
         versionLabel.setAlignment(QtCore.Qt.AlignCenter)
         vbox.addWidget(versionLabel)
 
-        descLabel = QtGui.QLabel(_('BingWallPaper is a app that set you desktop wallpaper with awesome image downloading from www.bing.com every hour'))
+        descLabel = QtWidgets.QLabel(_('BingWallPaper is a app that set you desktop wallpaper with awesome image downloading from www.bing.com every hour'))
         descLabel.setWordWrap(True)
         font = QtGui.QFont()
         font.setPixelSize(14)
@@ -183,7 +189,7 @@ class AboutWindow(QtGui.QWidget):
 
         vbox.addWidget(descLabel)
 
-        crLabel = QtGui.QLabel('Copyright © 2012-2017 IMEVER')
+        crLabel = QtWidgets.QLabel('Copyright © 2012-2018 IMEVER')
         crLabel.setAlignment(QtCore.Qt.AlignCenter)
         pe = QtGui.QPalette()
         pe.setColor(QtGui.QPalette.WindowText, QtCore.Qt.gray)
@@ -194,7 +200,7 @@ class AboutWindow(QtGui.QWidget):
 
     def center(self):
         qr = self.frameGeometry()  # 返回代表窗口框架结构的矩形
-        cp = QtGui.QDesktopWidget().availableGeometry().center()  # 返回屏幕（可显示区域）的中心点
+        cp = QtWidgets.QDesktopWidget().availableGeometry().center()  # 返回屏幕（可显示区域）的中心点
         qr.moveCenter(cp)  # 将与窗口同大的矩形移动到屏幕中央
         self.move(qr.topLeft())  # 将主窗口移动到已定位的矩形处，QWidget的移动以左上角为基准点
 

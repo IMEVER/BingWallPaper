@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 import re
 import threading
-import urllib2, urllib
+import urllib.request
 import os
 import time
-from Db import Model
-from Log import Log
+from WallPaper.Db import Model
+from WallPaper.Log import Log
 import json
 
 
@@ -35,7 +35,7 @@ class BingImg(threading.Thread):
 
         dest = dir + file
         try:
-            urllib.urlretrieve(url, dest)
+            urllib.request.urlretrieve(url, dest)
             self.logger.info('Save image ' + url + ' to dir ' + dest)
 
             model.save(time.strftime('%Y-%m-%d'), url, file)
@@ -45,7 +45,7 @@ class BingImg(threading.Thread):
 
     def parse_img_url(self):
         url = 'https://www.bing.com/'
-        data = urllib2.urlopen(url)
+        data = urllib.request.urlopen(url)
 
         content = data.read()
         # print content
@@ -64,7 +64,7 @@ class BingImg(threading.Thread):
 
     def parse_img_url_from_json(self):
         url = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1'
-        data = urllib2.urlopen(url).read().decode('utf-8')
+        data = urllib.request.urlopen(url).read().decode('utf-8')
         ret = json.loads(data)
         imgUrl = ret['images'][0]['url']
 

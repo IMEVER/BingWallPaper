@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 # coding:utf-8
 import os
 import os.path
 import random
 import time
 import threading
-from Log import Log
+from WallPaper.Log import Log
 
 
 class AutoSwitch(threading.Thread):

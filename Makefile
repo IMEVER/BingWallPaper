@@ -26,4 +26,4 @@ clean:
 
 deb:clean install
 	cd ${DESTDIR};\
-	fakeroot dpkg -b ${BUILDDIR} bingwallpaper_1.0.2.deb
+	fakeroot dpkg -b ${BUILDDIR} bingwallpaper_2.0.1.deb
