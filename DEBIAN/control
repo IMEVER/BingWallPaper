@@ -7,4 +7,4 @@ description: It is an app for you to auto change desktop
 Section: base
 Priority: optional
 Installed-Size:31.7KB
-depends:python,python-qt4,libqt4-sql-sqlite
+depends:python3.6,python3-pyqt5
